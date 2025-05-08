@@ -37,6 +37,6 @@ async def generate_response(payload: GenerateResponseRequest, response_model=Gen
         response: GeneratedResponse = GenerateResponseCommand(request=payload).execute()
 
     except ValueError as value_error:
-        raise HTTPException(status_code=400) from value_error
+        raise HTTPException(status_code=400, detail=str(value_error))
 
     return response
