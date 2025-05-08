@@ -7,7 +7,7 @@ from google.oauth2 import id_token
 CLIENT_ID = os.getenv("CLIENT_ID")
 router = APIRouter()
 
-@router.get("/api/verify")
+@router.get("/verify")
 async def secure_data(request: Request):
     auth_header = request.headers.get('authorization')
     if not auth_header or not auth_header.startswith("Bearer "):
