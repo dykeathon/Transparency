@@ -44,12 +44,6 @@ chrome.identity.getAuthToken({ interactive: true }, function(token) {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Check if this is first load
-    const { uid } = await chrome.storage.local.get("uid");
-    if (!uid) {
-      const newUid = generateUID();
-      await chrome.storage.local.set({ uid: newUid });
-    }
 
     const { selectedText } = await chrome.storage.local.get("selectedText");
     const generateButton = document.getElementById("generate");
@@ -341,7 +335,61 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("copy").addEventListener("click", () => {
       const text = document.getElementById("output").textContent;
-      navigator.clipboard.writeText(text);
+      navigator.clipboard.writeText(text).then(() => {
+        const isHebrew = languageToggle.checked;
+        const successMessages = isHebrew ? [
+          "!הועתק! ממשיכים להילחם בטרנספוביה💪",
+          "מעולה! התגובה הועתקה. המשיכו להיות בעלי.ות ברית! 🌈",
+          "הועתק בהצלחה! יחד נוכל לשנות את העולם 🌟",
+          "כל הכבוד! ממשיכיםות להפיץ אהבה ותמיכה 💖",
+          "התגובה שלך יכולה לעזור למישהו להרגיש נראה 💬",
+          "אתםן עושיםות את ההבדל 👏"
+        ] : [
+          "Copied successfully! Keep fighting transphobia! 💪",
+          "Great job! Response copied. Keep being an ally! 🌈",
+          "Copied! Together we can change the world 🌟",
+          "Well done! Keep spreading love and support 💖",
+          "💬 Your response may help someone feel seen.",
+          "👏 You're making a difference."
+        ];
+        
+        const randomMessage = successMessages[Math.floor(Math.random() * successMessages.length)];
+        
+        // Create success message element if it doesn't exist
+        let successElement = document.getElementById('success-message');
+        if (!successElement) {
+          successElement = document.createElement('div');
+          successElement.id = 'success-message';
+          successElement.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 1000;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            width: 100%;
+            box-sizing: border-box;
+          `;
+          document.getElementById('output').style.position = 'relative';
+          document.getElementById('output').appendChild(successElement);
+        }
+        
+        // Show the message
+        successElement.textContent = randomMessage;
+        successElement.style.opacity = '1';
+        
+        // Hide the message after 3 seconds with fade effect
+        setTimeout(() => {
+          successElement.style.opacity = '0';
+        }, 3000);
+      });
     });
 
     // Add like/dislike button functionality

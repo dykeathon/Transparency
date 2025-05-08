@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "TransDefender",
+  "name": "Transparency",
   "version": "1.0",
   "description": "AI Anti-Transphobic Comment Generator",
   "permissions": [
