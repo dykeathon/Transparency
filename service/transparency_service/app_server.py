@@ -1,14 +1,13 @@
 # transparency_service/app_server.py
 
-from fastapi import FastAPI
 from contextlib import asynccontextmanager
+
 from dotenv import load_dotenv
-
-from service.transparency_service.api.commands.generate_response_command import GenerateResponseCommand
-from service.transparency_service.api.messages.generate_response_request import GenerateResponseRequest
-from service.transparency_service.api.messages.generated_response import GeneratedResponse
-from service.transparency_service.auth_routes import router as auth_router
-
+from fastapi import FastAPI
+from transparency_service.api.commands.generate_response_command import GenerateResponseCommand
+from transparency_service.api.messages.generate_response_request import GenerateResponseRequest
+from transparency_service.api.messages.generated_response import GeneratedResponse
+from transparency_service.auth_routes import router as auth_router
 
 load_dotenv()
 
