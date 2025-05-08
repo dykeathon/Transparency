@@ -1,0 +1,1 @@
+from transparency_service.app_server import transparency_app
