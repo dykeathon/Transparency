@@ -2,6 +2,20 @@ from enum import Enum
 
 from pydantic import BaseModel
 
+"""
+Defines the request model for generating a response to hateful content.
+
+Json example:
+{
+   "hateful_content":"some very not nice comment I saw on the internet",
+   "response_generation_parameters":{
+      "length":"one_liner",
+      "tone":"assertive",
+      "should_include_links":false
+   }
+}
+"""
+
 class ResponseLengthEnum(Enum):
     ONE_LINER = "one_liner" # up to 75 characters
     SHORT = "short" # 75 to 150 characters
