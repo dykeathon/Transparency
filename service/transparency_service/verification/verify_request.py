@@ -2,7 +2,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from flask import Flask, request, jsonify
 
-CLIENT_ID = "YOUR_CLIENT_ID.apps.googleusercontent.com"
+CLIENT_ID = "142254257490-e9a9pqk1kkpq999tll0hqlt51g27d1dg.apps.googleusercontent.com"
 
 app = Flask(__name__)
 
