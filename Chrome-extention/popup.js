@@ -290,18 +290,42 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Update last request time
       await updateLastRequestTime();
 
-      // Simulate delay and dummy response
-      setTimeout(() => {
-        const fakeResponse = `Hey, I understand where this might be coming from, but it's important to recognize that being trans isn't a phase or confusion. Everyone deserves respect and dignity.
-  
-  ${includeLink === "yes" ? "Here's a helpful resource: https://transequality.org/" : ""}`;
+      // Send request to backend
+      try {
+        const response = await fetch("https://your-backend-url.com/generate-response", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-User-ID": userInfo?.hashedId || 'anonymous',
+            "X-Language": languageToggle.checked ? 'he' : 'en'
+          },
+          body: JSON.stringify({
+            hateful_content: input,
+            length: length,
+            tone: tone,
+            should_include_links: includeLink === "yes"
+          })
+        });
 
-        document.getElementById("output").textContent = fakeResponse;
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // Display the generated response
+        document.getElementById("output").textContent = data.generated_response;
+      } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("output").textContent = languageToggle.checked ? 
+          "אירעה שגיאה ביצירת התגובה. אנא נסי שוב." : 
+          "An error occurred while generating the response. Please try again.";
+      } finally {
         // Re-enable generate button and show copy button after response
         generateButton.disabled = false;
         copyButton.style.display = "block";
         isRequestInProgress = false;
-      }, 1500);
+      }
     });
 
     document.getElementById("copy").addEventListener("click", () => {
