@@ -10,3 +10,8 @@ On Windows:
 uvicorn transparency_service.app_server:transparency_app --host 0.0.0.0 --port 8000 --workers 4
 
 ### ! Installation and Running should be done from the service directory ! ###
+
+### Environment Variables ###
+HUGGING_FACE_KEY
+- Contains Hugging Face API access token
+- Used for the preliminary detection when validating the content contains harmful anti-trans content

@@ -27,9 +27,9 @@ def classify_transphobia(text):
     #     "is_offensive": max(score for item in result for score in [item["score"]]) > 0.7
     #
     # }
-def is_text_offvensive(result):
-    is_offensive = max(score for item in result for score in [item["score"]]) > 0.7
-    return is_offensive
+def is_text_offensive(text: str):
+    result = classify_transphobia(text)  # API call
+    return max(score for item in result for score in [item["score"]]) > 0.7
 
 if __name__ == "__main__":
     texts_to_evaluate = [
@@ -45,6 +45,5 @@ if __name__ == "__main__":
         "We don’t want people like them in our school."
     ]
     for text in texts_to_evaluate:
-        output = classify_transphobia(text)  # API call
-        is_offensive = is_text_offvensive(output)
+        is_offensive = is_text_offensive(text)
         print(f"[{'⚠️' if is_offensive else '✅'}] {text}")
