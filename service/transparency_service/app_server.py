@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from transparency_service.api.commands.generate_response_command import GenerateResponseCommand
 from transparency_service.api.messages.generate_response_request import GenerateResponseRequest
 from transparency_service.api.messages.generated_response import GeneratedResponse
-from transparency_service.auth_routes import router as auth_router
+from transparency_service.api.middleware.middleware import auth_middleware
 
 load_dotenv()
 
@@ -23,13 +23,12 @@ async def lifespan(app: FastAPI):
     print("Lifespan shutdown: cleaning up.")
 
 transparency_app = FastAPI(lifespan=lifespan)
+transparency_app.middleware("http")(auth_middleware)
+
 
 @transparency_app.get("/")
 async def root():
     return {"message": "Hello World"}
-
-# Include /api/verify route
-transparency_app.include_router(auth_router)
 
 
 @transparency_app.post("/transparency/generate_response")
