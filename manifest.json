@@ -1,0 +1,20 @@
+{
+    "manifest_version": 3,
+    "name": "Anti-Transphobia Responder",
+    "version": "1.0",
+    "description": "Generate AI replies to harmful transphobic comments.",
+    "permissions": ["contextMenus", "storage", "activeTab", "scripting"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "128": "icons/icon128.png"
+      }
+    },
+    "icons": {
+      "128": "icons/icon128.png"
+    }
+  }
+  
