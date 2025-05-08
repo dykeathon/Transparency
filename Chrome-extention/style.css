@@ -74,10 +74,15 @@ textarea[readonly], #output {
   border-radius: 8px;
 }
 
+.button-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
 #copy {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
   background: #b2ebf2;
   color: #444;
   border: none;
@@ -85,6 +90,55 @@ textarea[readonly], #output {
   font-size: 1em;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(178, 235, 242, 0.15);
+  margin: 0;
+  transition: all 0.2s ease;
+}
+
+#copy:not(:disabled):hover {
+  background: #80deea;
+  box-shadow: 0 4px 16px rgba(178, 235, 242, 0.2);
+  transform: translateY(-1px);
+}
+
+#copy:disabled {
+  background: #e0f7fa;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.feedback-btn {
+  padding: 5px 10px;
+  border: none;
+  background: #b2ebf2;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(178, 235, 242, 0.15);
+  margin: 0;
+}
+
+.feedback-btn:not(:disabled):hover {
+  background: #80deea;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(178, 235, 242, 0.2);
+}
+
+.feedback-btn.active {
+  background: #4dd0e1;
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(77, 208, 225, 0.3);
+}
+
+.feedback-btn:disabled {
+  background: #e0f7fa;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+  transform: none;
 }
 
 /* Radio button styling */
@@ -209,4 +263,49 @@ input:checked + .slider:before {
   background-color: white;
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
   font-size: 1em;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.header-text {
+  flex: 1;
+}
+
+.app-name {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #2c3e50;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-description {
+  margin: 4px 0 0 0;
+  font-size: 0.9em;
+  color: #000000;
+  font-weight: 500;
 }

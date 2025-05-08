@@ -14,7 +14,13 @@
     <span id="languageLabel">English</span>
   </div>
 
-  <h3>AI Anti-Transphobic Comment Generator</h3>
+  <div class="header">
+    <img src="icons/flag.png" alt="TransDefender Logo" class="logo">
+    <div class="header-text">
+      <h1 class="app-name">TransDefender</h1>
+      <h3 class="app-description">AI Anti-Transphobic Comment Generator</h3>
+    </div>
+  </div>
 
   <label data-en="Selected Comment:" data-he="תגובה נבחרת:">Selected Comment:</label>
   <textarea id="input" rows="3" readonly></textarea>
@@ -50,7 +56,11 @@
   <button id="generate" data-en="Generate Response" data-he="צור תגובה">Generate Response</button>
 
   <pre id="output"></pre>
-  <button id="copy" data-en="📋 Copy" data-he="📋 העתק">📋 Copy</button>
+  <div class="button-group">
+    <button id="copy" data-en="📋 Copy" data-he="📋 העתק">📋 Copy</button>
+    <button id="like" class="feedback-btn" data-en="👍" data-he="👍">👍</button>
+    <button id="dislike" class="feedback-btn" data-en="👎" data-he="👎">👎</button>
+  </div>
 
   <script src="popup.js"></script>
 </body>

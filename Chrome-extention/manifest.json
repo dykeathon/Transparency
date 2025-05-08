@@ -1,14 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Anti-Transphobia Responder",
+  "name": "TransDefender",
   "version": "1.0",
-  "description": "Generate AI replies to harmful transphobic comments.",
+  "description": "AI-powered anti-transphobic comment generator",
   "permissions": [
-    "contextMenus",
-    "storage",
     "activeTab",
-    "scripting",
-    "identity"
+    "storage",
+    "identity",
+    "contextMenus"
   ],
   "oauth2": {
     "client_id": "571816955623-5cv9o69vb4k6s7nuvib9phacpgu536iu.apps.googleusercontent.com",
@@ -22,10 +21,14 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "128": "icons/Heart_Trans.jpg"
+      "16": "icons/transgender.png",
+      "48": "icons/transgender.png",
+      "128": "icons/transgender.png"
     }
   },
   "icons": {
-    "128": "icons/Heart_Trans.jpg"
+    "16": "icons/transgender.png",
+    "48": "icons/transgender.png",
+    "128": "icons/transgender.png"
   }
 }

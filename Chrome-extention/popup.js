@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const outputElement = document.getElementById("output");
     
     // Initially hide copy button
-    copyButton.style.display = "none";
+    copyButton.disabled = true;
 
     // Session tracking
     const COOLDOWN_SECONDS = 5;
@@ -154,58 +154,59 @@ document.addEventListener("DOMContentLoaded", async () => {
       
       if (!text || text.trim() === "") {
         generateButton.disabled = true;
+        copyButton.disabled = true;
         outputElement.textContent = isHebrew ? 
           "בבקשה סמנו טקסט" : 
           "Please select some text first";
-        copyButton.style.display = "none";
         return false;
       }
       
       if (text.length < minTextLength) {
         generateButton.disabled = true;
+        copyButton.disabled = true;
         outputElement.textContent = isHebrew ? 
           `הטקסט המסומן חייב להיות לפחות ${minTextLength} תווים` : 
           `Selected text must be at least ${minTextLength} characters long`;
-        copyButton.style.display = "none";
         return false;
       }
 
       if (hasMostlyNonCharacters(text)) {
         generateButton.disabled = true;
+        copyButton.disabled = true;
         outputElement.textContent = isHebrew ? 
           "הטקסט המסומן מכיל יותר מדי מספרים או סימנים. אנא בחרי טקסט עם יותר מילים." : 
           "The selected text contains too many numbers or symbols. Please select text with more words.";
-        copyButton.style.display = "none";
         return false;
       }
 
       if (hasRepetitiveText(text)) {
         generateButton.disabled = true;
+        copyButton.disabled = true;
         outputElement.textContent = isHebrew ? 
           "הטקסט המסומן מכיל יותר מדי חזרות. אנא בחרי טקסט מגוון יותר." : 
           "The selected text contains too many repetitions. Please select more varied text.";
-        copyButton.style.display = "none";
         return false;
       }
 
       if (hasNonContentPatterns(text)) {
         generateButton.disabled = true;
+        copyButton.disabled = true;
         outputElement.textContent = isHebrew ? 
           "הטקסט המסומן מכיל ביטויים שאינם מתאימים. אנא בחרי טקסט תוכן אמיתי." : 
           "The selected text contains non-content patterns. Please select actual content text.";
-        copyButton.style.display = "none";
         return false;
       }
 
       // Check cooldown
       if (!await checkCooldown()) {
         generateButton.disabled = true;
+        copyButton.disabled = true;
         return false;
       }
       
       generateButton.disabled = false;
+      copyButton.disabled = true; // Keep copy disabled until response is generated
       outputElement.textContent = "";
-      copyButton.style.display = "none";
       return true;
     }
 
@@ -247,7 +248,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Set request in progress
       isRequestInProgress = true;
       generateButton.disabled = true;
-      copyButton.style.display = "none";
+      copyButton.disabled = true;
 
       const tone = document.getElementById("tone").value;
       const length = document.getElementById("length").value;
@@ -292,7 +293,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Send request to backend
       try {
-        const response = await fetch("https://your-backend-url.com/generate-response", {
+        /* TEST: Dummy response for UI testing
+        const testResponse = {
+          generated_response: `I understand you might have questions about gender identity, and that's okay. Being transgender isn't about confusion - it's about being true to oneself. Many trans people have known their gender identity from a young age, and their experiences are valid and real.
+
+If you're interested in learning more, here are some helpful resources:
+- Understanding Gender Identity: https://transequality.org/issues/understanding-trans
+- Supporting Trans People: https://www.glaad.org/transgender/resources`
+        };
+        
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Display the test response
+        document.getElementById("output").textContent = testResponse.generated_response;
+        copyButton.disabled = false;
+        likeButton.disabled = false;
+        dislikeButton.disabled = false;
+        */
+
+        const response = await fetch("https://transparency-p5a6.onrender.com/transparency/generate_response", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -315,15 +335,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         // Display the generated response
         document.getElementById("output").textContent = data.generated_response;
+        copyButton.disabled = false;
+        likeButton.disabled = false;
+        dislikeButton.disabled = false;
       } catch (error) {
         console.error("Error:", error);
         document.getElementById("output").textContent = languageToggle.checked ? 
           "אירעה שגיאה ביצירת התגובה. אנא נסי שוב." : 
           "An error occurred while generating the response. Please try again.";
+        copyButton.disabled = true;
+        likeButton.disabled = true;
+        dislikeButton.disabled = true;
       } finally {
-        // Re-enable generate button and show copy button after response
+        // Re-enable generate button after response
         generateButton.disabled = false;
-        copyButton.style.display = "block";
         isRequestInProgress = false;
       }
     });
@@ -332,6 +357,51 @@ document.addEventListener("DOMContentLoaded", async () => {
       const text = document.getElementById("output").textContent;
       navigator.clipboard.writeText(text);
     });
+
+    // Add like/dislike button functionality
+    const likeButton = document.getElementById("like");
+    const dislikeButton = document.getElementById("dislike");
+
+    // Initially disable feedback buttons
+    likeButton.disabled = true;
+    dislikeButton.disabled = true;
+
+    // Function to handle feedback
+    function handleFeedback(type) {
+      const isHebrew = languageToggle.checked;
+      const feedbackMessage = isHebrew ? 
+        "תודה על המשוב!" : 
+        "Thank you for your feedback!";
+      
+      // Disable both buttons after feedback
+      likeButton.disabled = true;
+      dislikeButton.disabled = true;
+      
+      // Show feedback message
+      const output = document.getElementById("output");
+      const originalText = output.textContent;
+      output.textContent = `${originalText}\n\n${feedbackMessage}`;
+    }
+
+    likeButton.addEventListener("click", () => handleFeedback("like"));
+    dislikeButton.addEventListener("click", () => handleFeedback("dislike"));
+
+    // Update feedback buttons state when response is generated
+    const originalGenerateClick = document.getElementById("generate").onclick;
+    document.getElementById("generate").onclick = async function() {
+      // Disable feedback buttons when generating new response
+      likeButton.disabled = true;
+      dislikeButton.disabled = true;
+      
+      // Call original click handler
+      await originalGenerateClick();
+      
+      // Enable feedback buttons after response is generated
+      if (document.getElementById("output").textContent) {
+        likeButton.disabled = false;
+        dislikeButton.disabled = false;
+      }
+    };
 });
 
 
