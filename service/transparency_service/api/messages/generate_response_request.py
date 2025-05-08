@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 """
 Defines the request model for generating a response to hateful content.
@@ -12,6 +12,7 @@ Json example:
       "length":"one_liner",
       "tone":"assertive",
       "should_include_links":false
+      "content_language":"english"
    }
 }
 """
@@ -29,11 +30,16 @@ class ResponseToneEnum(Enum):
     ASSERTIVE = "assertive" # Makes it clear that harmful speech isn’t acceptable, while maintaining professionalism
     DE_ESCALATING = "de_escalating" # Redirects the conversation toward understanding rather than conflict
 
+class SupportedContentLanguageEnum(Enum):
+    ENGLISH = "english"
+    HEBREW = "hebrew"
+
 class ResponseGenerationParameters(BaseModel):
     length: ResponseLengthEnum
     tone: ResponseToneEnum
     should_include_links: bool
+    content_language: SupportedContentLanguageEnum
 
 class GenerateResponseRequest(BaseModel):
-    hateful_content: str
+    hateful_content: str = Field(min_length=1, max_length=2048)
     response_generation_parameters: ResponseGenerationParameters
