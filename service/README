@@ -13,5 +13,5 @@ uvicorn transparency_service.app_server:transparency_app --host 0.0.0.0 --port 8
 
 ### Environment Variables ###
 HUGGING_FACE_KEY
-- Contains Hugging Face API access token
+- You must pass a token with write access to the gated repository. To define a token go to your setting page in hugging face: https://huggingface.co/settings/tokensContains Hugging Face API access token
 - Used for the preliminary detection when validating the content contains harmful anti-trans content
