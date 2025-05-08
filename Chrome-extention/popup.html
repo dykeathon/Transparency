@@ -11,18 +11,24 @@
   <label>Selected Comment:</label>
   <textarea id="input" rows="3" readonly></textarea>
 
-  <label for="tone">Tone:</label><br>
-  <select id="tone" multiple>
-    <option value="Empathetic">Empathetic</option>
-    <option value="Supportive">Supportive</option>
-    <option value="Informative">Informative</option>
-    <option value="Calm">Calm</option>
-  </select><br><br>
+  <div class="categoiesDropDown" id="Tone">
+    <label for="tone">Tone:</label><br>
+    <select id="tone" name="tone">
+      <option value="Empathetic">Empathetic</option>
+      <option value="Supportive">Supportive</option>
+      <option value="Informative">Informative</option>
+      <option value="Calm">Calm</option>
+    </select><br><br>
+  </div>
 
-  <label>Length:</label><br>
-  <input type="radio" name="length" value="short" checked> Short
-  <input type="radio" name="length" value="medium"> Medium
-  <input type="radio" name="length" value="long"> Long<br><br>
+  <div class="categoiesDropDown" id="Length">
+    <label for="length">Length:</label><br>
+    <select id="length" name="length">
+      <option value="short">Short</option>
+      <option value="medium">Medium</option>
+      <option value="long">Long</option>
+    </select><br><br>
+  </div>
 
   <label>Include Link to Resources?</label>
   <input type="checkbox" id="includeLink"><br><br>
