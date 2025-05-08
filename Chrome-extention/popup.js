@@ -5,26 +5,27 @@ const languageLabel = document.getElementById('languageLabel');
 
 //show chrome ID
 let userInfo = null;
-chrome.identity.getProfileUserInfo({'accountStatus' : 'ANY'}, async (info) => {
-  userInfo = info;
-  if (info.id) {
-    // Convert the ID to a Uint8Array
-    const encoder = new TextEncoder();
-    const data = encoder.encode(info.id);
+chrome.identity.getAuthToken({'interactive' : true}, function(token) {
+  console.log('Token:', token);
+  // userInfo = info;
+  // if (info.id) {
+  //   // Convert the ID to a Uint8Array
+  //   const encoder = new TextEncoder();
+  //   const data = encoder.encode(info.id);
     
-    // Hash the data with SHA-256
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  //   // Hash the data with SHA-256
+  //   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     
-    // Convert the hash to a hex string
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  //   // Convert the hash to a hex string
+  //   const hashArray = Array.from(new Uint8Array(hashBuffer));
+  //   const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     
-    // Store the hashed ID
-    userInfo.hashedId = hashHex;
-    console.log('Original ID:', info.id);
-    console.log('Hashed ID:', hashHex);
+  //   // Store the hashed ID
+  //   userInfo.hashedId = hashHex;
+  //   console.log('Original ID:', info.id);
+  //   console.log('Hashed ID:', hashHex);
   }
-});
+);
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Check if this is first load

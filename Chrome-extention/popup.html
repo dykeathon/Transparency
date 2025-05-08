@@ -6,37 +6,49 @@
   <title>Transperacy</title>
 </head>
 <body>
-  <h3>🛡️ AI Anti-Transphobic Comment Generator</h3>
+  <div class="language-switch">
+    <label class="switch">
+      <input type="checkbox" id="languageToggle">
+      <span class="slider round"></span>
+    </label>
+    <span id="languageLabel">English</span>
+  </div>
 
-  <label>Selected Comment:</label>
+  <h3>AI Anti-Transphobic Comment Generator</h3>
+
+  <label data-en="Selected Comment:" data-he="תגובה נבחרת:">Selected Comment:</label>
   <textarea id="input" rows="3" readonly></textarea>
 
-  <div class="categoiesDropDown" id="Tone">
-    <label for="tone">Tone:</label><br>
-    <select id="tone" name="tone">
-      <option value="Empathetic">Empathetic</option>
-      <option value="Supportive">Supportive</option>
-      <option value="Informative">Informative</option>
-      <option value="Calm">Calm</option>
-    </select><br><br>
+  <div class="dropdowns-container">
+    <div class="categoiesDropDown" id="Tone">
+      <label for="tone" data-en="Tone:" data-he="טון:">Tone:</label>
+      <select id="tone" name="tone">
+        <option value="Empathetic" data-en="Empathetic" data-he="אמפתי">Empathetic</option>
+        <option value="Supportive" data-en="Supportive" data-he="תומך">Supportive</option>
+        <option value="Informative" data-en="Informative" data-he="מלמד">Informative</option>
+        <option value="Calm" data-en="Calm" data-he="רגוע">Calm</option>
+      </select>
+    </div>
+
+    <div class="categoiesDropDown" id="Length">
+      <label for="length" data-en="Length:" data-he="אורך:">Length:</label>
+      <select id="length" name="length">
+        <option value="short" data-en="Short" data-he="קצר">Short</option>
+        <option value="medium" data-en="Medium" data-he="בינוני">Medium</option>
+        <option value="long" data-en="Long" data-he="ארוך">Long</option>
+      </select>
+    </div>
   </div>
 
-  <div class="categoiesDropDown" id="Length">
-    <label for="length">Length:</label><br>
-    <select id="length" name="length">
-      <option value="short">Short</option>
-      <option value="medium">Medium</option>
-      <option value="long">Long</option>
-    </select><br><br>
+  <div id="includelink-container" style="display: none;">
+    <label data-en="Include Link to Resources?" data-he="לצרף קישורים לאתרים עם מידע?">Include Link to Resources?</label>
+    <input type="checkbox" id="includeLink"><br><br>
   </div>
 
-  <label>Include Link to Resources?</label>
-  <input type="checkbox" id="includeLink"><br><br>
-
-  <button id="generate">Generate Response</button>
+  <button id="generate" data-en="Generate Response" data-he="צור תגובה">Generate Response</button>
 
   <pre id="output"></pre>
-  <button id="copy">📋 Copy</button>
+  <button id="copy" data-en="📋 Copy" data-he="📋 העתק">📋 Copy</button>
 
   <script src="popup.js"></script>
 </body>

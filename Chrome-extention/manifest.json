@@ -3,7 +3,7 @@
     "name": "Anti-Transphobia Responder",
     "version": "1.0",
     "description": "Generate AI replies to harmful transphobic comments.",
-    "permissions": ["contextMenus", "storage", "activeTab", "scripting"],
+    "permissions": ["contextMenus", "storage", "activeTab", "scripting", "identity", "identity.email"],
     "background": {
       "service_worker": "background.js"
     },
