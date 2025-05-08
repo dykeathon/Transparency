@@ -2,12 +2,15 @@
   "manifest_version": 3,
   "name": "TransDefender",
   "version": "1.0",
-  "description": "AI-powered anti-transphobic comment generator",
+  "description": "AI Anti-Transphobic Comment Generator",
   "permissions": [
     "activeTab",
     "storage",
     "identity",
     "contextMenus"
+  ],
+  "host_permissions": [
+    "https://transparency-p5a6.onrender.com/*"
   ],
   "oauth2": {
     "client_id": "571816955623-5cv9o69vb4k6s7nuvib9phacpgu536iu.apps.googleusercontent.com",

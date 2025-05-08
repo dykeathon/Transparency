@@ -264,25 +264,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   Language: ${languageToggle.checked ? 'Hebrew' : 'English'}
   `;
 
-      // Create request structure with headers and body
-      const request = {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-User-ID': userInfo?.hashedId || 'anonymous',
-          'X-Language': languageToggle.checked ? 'he' : 'en'
-        },
-        body: {
-          selected_text: input,
-          params: {
-            tone: tone,
-            length: length,
-            include_link: includeLink === "yes",
-            language: languageToggle.checked ? 'he' : 'en'
-          }
+      const requestBody = {
+        hateful_content: input,
+        response_generation_parameters: {
+          length: document.getElementById('length').value.toLowerCase().replace('-', '_'),
+          tone: document.getElementById('tone').value.toLowerCase().replace('-', '_'),
+          should_include_links: document.getElementById('includeLink').checked,
+          content_language: languageToggle.checked ? 'hebrew' : 'english'
         }
       };
-      
-      console.log('Request to backend:', request);
+
+      console.log('Request body:', JSON.stringify(requestBody, null, 2));
 
       document.getElementById("output").textContent = languageToggle.checked ? 
         "⌛ יוצר תגובה..." : 
@@ -293,24 +285,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Send request to backend
       try {
-        /* TEST: Dummy response for UI testing
-        const testResponse = {
-          generated_response: `I understand you might have questions about gender identity, and that's okay. Being transgender isn't about confusion - it's about being true to oneself. Many trans people have known their gender identity from a young age, and their experiences are valid and real.
-
-If you're interested in learning more, here are some helpful resources:
-- Understanding Gender Identity: https://transequality.org/issues/understanding-trans
-- Supporting Trans People: https://www.glaad.org/transgender/resources`
-        };
-        
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Display the test response
-        document.getElementById("output").textContent = testResponse.generated_response;
-        copyButton.disabled = false;
-        likeButton.disabled = false;
-        dislikeButton.disabled = false;
-        */
+        console.log('Sending request to:', "https://transparency-p5a6.onrender.com/transparency/generate_response");
+        console.log('With headers:', {
+          "Content-Type": "application/json",
+          "X-User-ID": userInfo?.hashedId || 'anonymous',
+          "X-Language": languageToggle.checked ? 'he' : 'en'
+        });
 
         const response = await fetch("https://transparency-p5a6.onrender.com/transparency/generate_response", {
           method: "POST",
@@ -319,27 +299,33 @@ If you're interested in learning more, here are some helpful resources:
             "X-User-ID": userInfo?.hashedId || 'anonymous',
             "X-Language": languageToggle.checked ? 'he' : 'en'
           },
-          body: JSON.stringify({
-            hateful_content: input,
-            length: length,
-            tone: tone,
-            should_include_links: includeLink === "yes"
-          })
+          body: JSON.stringify(requestBody)
         });
 
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          const errorText = await response.text();
+          console.error('Error response body:', errorText);
+          throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
         }
 
         const data = await response.json();
+        console.log('Success response:', data);
         
         // Display the generated response
-        document.getElementById("output").textContent = data.generated_response;
+        let responseText = data.content;
+        if (data.links && data.links.length > 0) {
+          responseText += '\n\nResources:\n' + data.links.map(link => `- ${link}`).join('\n');
+        }
+        
+        document.getElementById("output").textContent = responseText;
         copyButton.disabled = false;
         likeButton.disabled = false;
         dislikeButton.disabled = false;
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Full error details:", error);
         document.getElementById("output").textContent = languageToggle.checked ? 
           "אירעה שגיאה ביצירת התגובה. אנא נסי שוב." : 
           "An error occurred while generating the response. Please try again.";
@@ -385,23 +371,6 @@ If you're interested in learning more, here are some helpful resources:
 
     likeButton.addEventListener("click", () => handleFeedback("like"));
     dislikeButton.addEventListener("click", () => handleFeedback("dislike"));
-
-    // Update feedback buttons state when response is generated
-    const originalGenerateClick = document.getElementById("generate").onclick;
-    document.getElementById("generate").onclick = async function() {
-      // Disable feedback buttons when generating new response
-      likeButton.disabled = true;
-      dislikeButton.disabled = true;
-      
-      // Call original click handler
-      await originalGenerateClick();
-      
-      // Enable feedback buttons after response is generated
-      if (document.getElementById("output").textContent) {
-        likeButton.disabled = false;
-        dislikeButton.disabled = false;
-      }
-    };
 });
 
 
