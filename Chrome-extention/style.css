@@ -1,0 +1,76 @@
+body {
+    background: linear-gradient(135deg, #ffe4ec 0%, #e0f7fa 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #444;
+    padding: 16px;
+    border-radius: 16px;
+    min-width: 320px;
+  }
+  
+  button, select, textarea {
+    border-radius: 8px;
+    border: none;
+    font-size: 1em;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    box-shadow: 0 2px 8px rgba(200, 200, 255, 0.08);
+    transition: background 0.2s;
+  }
+  
+  button {
+    background: #ffd6ec;
+    color: #444;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background: #f8bbd0;
+  }
+  
+  #selectComment, #generate, #tired {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  textarea[readonly], #output {
+    background: #fff;
+    border: 1px solid #e0f7fa;
+    resize: none;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  
+  #output {
+    min-height: 60px;
+    background: #e0f7fa;
+    color: #444;
+  }
+  
+  #copy {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background: #b2ebf2;
+    color: #444;
+    border: none;
+    padding: 4px 8px;
+    font-size: 1em;
+  }
+  
+  div {
+    position: relative;
+  }
+  
+  select {
+    background: #fff0fa;
+    color: #444;
+    margin-right: 10px;
+  }
+  
+  @media (max-width: 400px) {
+    body {
+      min-width: 220px;
+      padding: 8px;
+    }
+  }
