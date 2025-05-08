@@ -28,38 +28,77 @@ chrome.identity.getAuthToken({'interactive' : true}, function(token) {
 );
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Check if this is first load
-  const { uid } = await chrome.storage.local.get("uid");
-  if (!uid) {
-    const newUid = generateUID();
-    await chrome.storage.local.set({ uid: newUid });
-  }
-
-  const { selectedText } = await chrome.storage.local.get("selectedText");
-  document.getElementById("input").value = selectedText || "“Trans people are just confused.”";
-
-  // Set initial state of include link container
-  const includeLinkContainer = document.getElementById("includelink-container");
-  includeLinkContainer.style.display = document.getElementById("tone").value === "Informative" ? "block" : "none";
-
-  // Add event listener for tone changes
-  document.getElementById("tone").addEventListener("change", function () {
-    includeLinkContainer.style.display = this.value === "Informative" ? "block" : "none";
-    // Reset checkbox when hidden
-    if (this.value !== "Informative") {
-      document.getElementById("includeLink").checked = false;
+    // Check if this is first load
+    const { uid } = await chrome.storage.local.get("uid");
+    if (!uid) {
+      const newUid = generateUID();
+      await chrome.storage.local.set({ uid: newUid });
     }
-  });
 
-  document.getElementById("generate").addEventListener("click", async () => {
-    const input = document.getElementById("input").value;
+    const { selectedText } = await chrome.storage.local.get("selectedText");
+    const generateButton = document.getElementById("generate");
+    const outputElement = document.getElementById("output");
+    
+    // Function to validate input and update UI
+    function validateInput(text) {
+      const isHebrew = languageToggle.checked;
+      
+      if (!text || text.trim() === "") {
+        generateButton.disabled = true;
+        outputElement.textContent = isHebrew ? 
+          "בבקשה סמנו טקסט" : 
+          "Please select some text first";
+        return false;
+      }
+      
+      if (text.length < 10) {
+        generateButton.disabled = true;
+        outputElement.textContent = isHebrew ? 
+          "הטקסט המסומן חייב להיות לפחות 10 תווים" : 
+          "Selected text must be at least 10 characters long";
+        return false;
+      }
+      
+      generateButton.disabled = false;
+      outputElement.textContent = "";
+      return true;
+    }
 
-    const tone = document.getElementById("tone").value;
+    // Set initial input and validate
+    document.getElementById("input").value = selectedText || "“Trans people are just confused.”";
+    validateInput(document.getElementById("input").value);
 
-    const length = document.getElementById("length").value;
-    const includeLink = document.getElementById("includeLink").checked ? "yes" : "no";
+    // Set initial state of include link container
+    const includeLinkContainer = document.getElementById("includelink-container");
+    includeLinkContainer.style.display = document.getElementById("tone").value === "Informative" ? "block" : "none";
 
-    const prompt = `
+    // Add event listener for tone changes
+    document.getElementById("tone").addEventListener("change", function () {
+      includeLinkContainer.style.display = this.value === "Informative" ? "block" : "none";
+      // Reset checkbox when hidden
+      if (this.value !== "Informative") {
+        document.getElementById("includeLink").checked = false;
+      }
+    });
+
+    // Update validation message when language changes
+    languageToggle.addEventListener("change", function() {
+      validateInput(document.getElementById("input").value);
+    });
+
+    document.getElementById("generate").addEventListener("click", async () => {
+      const input = document.getElementById("input").value;
+      
+      // Validate input before proceeding
+      if (!validateInput(input)) {
+        return;
+      }
+
+      const tone = document.getElementById("tone").value;
+      const length = document.getElementById("length").value;
+      const includeLink = document.getElementById("includeLink").checked ? "yes" : "no";
+
+      const prompt = `
   [Simulated request]
   Comment: "${input}"
   Tone: ${tone}
@@ -68,40 +107,42 @@ document.addEventListener("DOMContentLoaded", async () => {
   User ID: ${userInfo?.hashedId || 'anonymous'}
   `;
 
-    // Create request structure with headers and body
-    const request = {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-User-ID': userInfo?.hashedId || 'anonymous'
-      },
-      body: {
-        selected_text: input,
-        params: {
-          tone: tone,
-          length: length,
-          include_link: includeLink === "yes"
+      // Create request structure with headers and body
+      const request = {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-User-ID': userInfo?.hashedId || 'anonymous'
+        },
+        body: {
+          selected_text: input,
+          params: {
+            tone: tone,
+            length: length,
+            include_link: includeLink === "yes"
+          }
         }
-      }
-    };
-    
-    console.log('Request to backend:', request);
+      };
+      
+      console.log('Request to backend:', request);
 
-    document.getElementById("output").textContent = "⌛ Generating response...";
+      document.getElementById("output").textContent = languageToggle.checked ? 
+        "⌛ יוצר תגובה..." : 
+        "⌛ Generating response...";
 
-    // Simulate delay and dummy response
-    setTimeout(() => {
-      const fakeResponse = `Hey, I understand where this might be coming from, but it's important to recognize that being trans isn't a phase or confusion. Everyone deserves respect and dignity.
+      // Simulate delay and dummy response
+      setTimeout(() => {
+        const fakeResponse = `Hey, I understand where this might be coming from, but it's important to recognize that being trans isn't a phase or confusion. Everyone deserves respect and dignity.
   
   ${includeLink === "yes" ? "Here's a helpful resource: https://transequality.org/" : ""}`;
 
-      document.getElementById("output").textContent = fakeResponse;
-    }, 1500);
-  });
+        document.getElementById("output").textContent = fakeResponse;
+      }, 1500);
+    });
 
-  document.getElementById("copy").addEventListener("click", () => {
-    const text = document.getElementById("output").textContent;
-    navigator.clipboard.writeText(text);
-  });
+    document.getElementById("copy").addEventListener("click", () => {
+      const text = document.getElementById("output").textContent;
+      navigator.clipboard.writeText(text);
+    });
 });
 
 
