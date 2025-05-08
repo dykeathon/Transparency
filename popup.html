@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <title>Transperacy</title>
+</head>
+<body>
+  <h3>🛡️ AI Anti-Transphobic Comment Generator</h3>
+
+  <label>Selected Comment:</label>
+  <textarea id="input" rows="3" readonly></textarea>
+
+  <div class="categoiesDropDown" id="Tone">
+  <label for="tone">Tone:</label><br>
+  <input type="radio" name="tone" value="Empathetic" id="tone-empathetic"> <label for="tone-empathetic">Empathetic</label>
+  <input type="radio" name="tone" value="Supportive" id="tone-supportive"> <label for="tone-supportive">Supportive</label>
+  <input type="radio" name="tone" value="Informative" id="tone-informative"> <label for="tone-informative">Informative</label>
+  <input type="radio" name="tone" value="Calm" id="tone-calm"> <label for="tone-calm">Calm</label><br><br>
+  </div>
+
+  <div class="categoiesDropDown" id="Length">
+  <label>Length:</label><br>
+  <input type="radio" name="length" value="short" checked> Short
+  <input type="radio" name="length" value="medium"> Medium
+  <input type="radio" name="length" value="long"> Long<br><br>
+  </div>
+
+  <label>Include Link to Resources?</label>
+  <input type="checkbox" id="includeLink"><br><br>
+
+  <button id="generate">Generate Response</button>
+
+  <pre id="output"></pre>
+  <button id="copy">📋 Copy</button>
+
+  <script src="popup.js"></script>
+</body>
+</html>
