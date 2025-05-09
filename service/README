@@ -1,17 +1,60 @@
 ### Transparency Chrome Extension Backend ###
+FastApi based server
+
+Contains single endpoint for the chrome extension to call
+Endpoint is POST /transparency/generate_response
+It should receive a json object with the following fields:
+{
+   "hateful_content":"some very not nice comment I saw on the internet",
+   "response_generation_parameters":{
+      "length":"one_liner",
+      "tone":"assertive",
+      "should_include_links":false
+      "content_language":"english"
+   }
+}
+
+The server will return a json object with the following fields:
+{
+   "response":"some very nice response to the hateful content",
+   "links":[]
+}
+
+Request should include bearer token signed by Google
+(The chrome extension should require the user to login with their google account)
+
+Endpoint runs a command consisting of several steps:
+- Middleware verifying the token
+- Preliminary step running a lightweight model verifying the text contains harmful anti trans content
+- Generating response using the main model
+
+The endpoint supports both English and Hebrew
+
 
 ### Installation ###
 pip install -r requirements.txt
 
+
 ### Running the Service ###
 python -m gunicorn -w 4 -k uvicorn.workers.UvicornWorker transparency_service.app_server:transparency_app --bind 0.0.0.0:8000
 
+
 ### ! Installation and Running should be done from the service directory ! ###
 
+
 ### Environment Variables ###
+
 HUGGING_FACE_KEY
 - You must pass a token with write access to the gated repository. To define a token go to your setting page in hugging face: https://huggingface.co/settings/tokensContains Hugging Face API access token
 - Used for the preliminary detection when validating the content contains harmful anti-trans content
+
+GOOGLE_APPLICATION_CREDENTIALS
+- Used in the hebrew version of the preliminary detection
+
+AZURE_OPENAI_API_KEY
+- Used in the main model generating the response, using openai's model
+
+
 
 ### Development ###
 
