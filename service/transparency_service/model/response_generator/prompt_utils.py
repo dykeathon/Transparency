@@ -1,6 +1,6 @@
-from constants import LENGTH_LIMITS, REQUIRED_KEYS, PROMPT_ROLE
+from transparency_service.model.response_generator.constants import LENGTH_LIMITS, REQUIRED_KEYS, PROMPT_ROLE
 
-def validate_params(params: dict) -> str | None:
+def validate_params(params: dict):
     missing = REQUIRED_KEYS - set(params)
     if missing:
         return f"Missing required keys: {missing}"
