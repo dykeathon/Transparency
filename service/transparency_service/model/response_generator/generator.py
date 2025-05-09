@@ -3,7 +3,7 @@
 import os
 from openai import AzureOpenAI
 from typing import List, Tuple
-from constants import PROMPT_ROLE
+from transparency_service.model.response_generator.constants import PROMPT_ROLE
 # from transparency_service.api.messages.generate_response_request import GenerateResponseRequest
 # from transparency_service.api.messages.generated_response import GeneratedResponse
 
