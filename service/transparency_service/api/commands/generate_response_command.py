@@ -14,8 +14,9 @@ class GenerateResponseCommand:
 
     def __verify_request_is_offensive(self):
         request_content: str = self.__request.hateful_content
+        content_language: str = self.__request.response_generation_parameters.content_language.value
         print(f"Verifying request content is offensive: {request_content}")
-        should_process_content: bool =  is_text_offensive(request_content, self.content_language.value())
+        should_process_content: bool =  is_text_offensive(request_content, content_language)
 
         if not should_process_content:
             raise ValueError("Request content haven't passed preliminary validation, verify comment is offensive.")

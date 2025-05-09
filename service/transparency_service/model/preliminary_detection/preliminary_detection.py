@@ -1,5 +1,6 @@
 import os
 import google.generativeai as genai
+from google.ai.generativelanguage import GenerateContentResponse
 import requests
 
 # API_URL = "https://api-inference.huggingface.co/models/turing08/distilbert-base-uncased-finetuned-hate"
@@ -19,12 +20,11 @@ def is_text_offensive(text: str, language: str) -> bool:
     """
     Check if the text is offensive using the appropriate model based on the language.
     """
+    print(f"Checking if text is offensive: {text} in language: {language}")
     if language == "english":
-        result = is_text_offensive_english(text)
-        return max(score for item in result for score in [item["score"]]) > 0.7
+        return is_text_offensive_english(text)
     elif language == "hebrew":
-        result = is_text_offensive_hebrew(text)
-        return max(score for item in result for score in [item["score"]]) > 0.7
+        return is_text_offensive_hebrew(text)
     return None
 
 
@@ -82,7 +82,7 @@ def build_prompt():
     """
 
 
-def is_text_offensive_hebrew(text: str, api_key: str=None) -> str:
+def is_text_offensive_hebrew(text: str, api_key: str=None) -> bool:
     """
     Use Gemini API to analyze whether the Hebrew input text is hateful toward transgender individuals.
     """
@@ -93,10 +93,11 @@ def is_text_offensive_hebrew(text: str, api_key: str=None) -> str:
     prompt = build_prompt() + f"\n\nInput Text:\n{text.strip()}\n\nYour Answer:"
 
     try:
-        response = model.generate_content(prompt)
-        return response.text.strip()
+        response: GenerateContentResponse = model.generate_content(prompt)
+        return "True" in response.candidates[0].content.parts[0].text
     except Exception as e:
-        return f"Error generating response: {str(e)}"
+        print (f"Error generating response: {str(e)}")
+        raise e
 
 
 if __name__ == "__main__":
