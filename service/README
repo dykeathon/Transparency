@@ -28,7 +28,10 @@ Endpoint runs a command consisting of several steps:
 - Preliminary step running a lightweight model verifying the text contains harmful anti trans content
 - Generating response using the main model
 
-The endpoint supports both English and Hebrew
+Additional features:
+- The endpoint supports both English and Hebrew
+- The endpoint passes list of reference links to the main model. The list is loaded dynamically from a resource file located in service/transparency_service/resources/reference_links.txt
+- The request has validation of the json + length restriction on the passed text (max 2048 characters)
 
 
 ### Installation ###
