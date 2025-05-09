@@ -123,20 +123,9 @@ def build_prompt(comment: str, tone: str, length: Tuple[int, int], include_links
     )
 
 
-from typing import Tuple
-
-# # Import your actual function
-# # from your_module import generate_response
-
-# # Define API configuration (usually this should be loaded from environment or config)
-# API_VERSION = "2023-07-01-preview"
-# ENDPOINT = "https://your-azure-openai-endpoint.openai.azure.com/"
-# DEPLOYMENT = "gpt-4"
-# api_key = "YOUR_AZURE_API_KEY"  # Replace or load from env
-
 def main():
     # Sample test input
-    comment = "Transgender people are just confused."
+    comment = "I don't understand why people can't just stick to their biological gender."
     tone = "mocking"
     length: Tuple[int, int] = (150, 300)
     include_links = False
@@ -160,66 +149,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# def main():
-#     # --- Step 1: Setup test enums and dataclasses ---
-#     from enum import Enum
-#     from dataclasses import dataclass
-#     from typing import List
-
-#     class Tone(Enum):
-#         COMPASSIONATE = "compassionate"
-#         NEUTRAL = "neutral"
-#         FIRM = "firm but respectful"
-
-#     class Length(Enum):
-#         ONE_LINER = "one-liner"
-#         SHORT = "short"
-#         MEDIUM = "medium"
-#         LONG = "long"
-
-#     class ContentLanguage(Enum):
-#         ENGLISH = "en"
-#         HEBREW = "he"
-
-#     @dataclass
-#     class ResponseGenerationParameters:
-#         tone: Tone
-#         length: Length
-#         should_include_links: bool
-#         content_language: ContentLanguage
-
-#     @dataclass
-#     class GenerateResponseRequest:
-#         hateful_content: str
-#         response_generation_parameters: ResponseGenerationParameters
-
-#     @dataclass
-#     class GeneratedResponse:
-#         content: str
-#         links: List[str]
-
-#     # --- Step 2: Construct a mock request ---
-#     mock_request = GenerateResponseRequest(
-#         hateful_content="I don't think trans people should expect society to change for them.",
-#         response_generation_parameters=ResponseGenerationParameters(
-#             tone=Tone.COMPASSIONATE,
-#             length=Length.MEDIUM,
-#             should_include_links=True,
-#             content_language=ContentLanguage.ENGLISH
-#         )
-#     )
-
-#     # --- Step 3: Call the wrapper function ---
-#     response: GeneratedResponse = generate_response_wrapper(mock_request)
-
-#     # --- Step 4: Print the result ---
-#     print("Generated Response:")
-#     print(response.content)
-#     print("\nIncluded Links:")
-#     print(response.links)
-
-
-# if __name__ == "__main__":
-#     main()
