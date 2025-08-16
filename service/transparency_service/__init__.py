@@ -1,1 +1,2 @@
-from transparency_service.app_server import transparency_app
+# from transparency_service.app_server import transparency_app
+__all__ = []
