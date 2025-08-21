@@ -3,24 +3,9 @@
   "name": "Transparency",
   "version": "1.0",
   "description": "AI Anti-Transphobic Comment Generator",
-  "permissions": [
-    "activeTab",
-    "storage",
-    "identity",
-    "contextMenus"
-  ],
-  "host_permissions": [
-    "https://transparency-p5a6.onrender.com/*"
-  ],
-  "oauth2": {
-    "client_id": "571816955623-5cv9o69vb4k6s7nuvib9phacpgu536iu.apps.googleusercontent.com",
-    "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-    ]
-  },
-  "background": {
-    "service_worker": "background.js"
-  },
+  "permissions": ["activeTab", "storage", "identity", "contextMenus"],
+  "host_permissions": ["https://transparency-p5a6.onrender.com/*"],
+  "background": { "service_worker": "background.js" },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
