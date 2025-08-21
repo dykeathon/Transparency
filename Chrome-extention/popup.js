@@ -17,7 +17,7 @@ async function hashData(data) {
 // ================= OIDC (ID token) =================
 // Get Google **ID token** (JWT starting with eyJ...)
 async function getGoogleIdToken() {
-  const clientId    = "<YOUR_WEB_CLIENT_ID>.apps.googleusercontent.com"; // <-- REPLACE
+  const clientId    = "571816955623-576f05lmkfoaa65c921d24p6djikpq04.apps.googleusercontent.com"; 
   const redirectUri = `https://${chrome.runtime.id}.chromiumapp.org/`;
   const nonce       = crypto.randomUUID();
 
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${idToken}`,                 // <-- IMPORTANT
+          "Authorization": `Bearer ${idToken}`,                 
           "X-User-ID": userInfo?.hashedId || 'anonymous',
           "X-Language": languageToggle.checked ? 'he' : 'en'
         },
